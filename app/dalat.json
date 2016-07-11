@@ -1,0 +1,73 @@
+{ "places": {
+  "Nhà hàng": {
+    "id01": {
+      "name": "Léguda  Buffet Rau Đà Lạt",
+      "lat": 11.9234684,
+      "longt": 108.4417341,
+      "thumbURL": "https://dl.dropboxusercontent.com/u/9116124/TourDemo/thumbnails/restaurants/rest_leguda.jpg",
+      "rating": 4.5
+    },
+    "id02": {
+      "name": "Wayfarer Coffee",
+      "lat": 11.942282,
+      "longt": 108.4346233,
+      "thumbURL": "https://dl.dropboxusercontent.com/u/9116124/TourDemo/thumbnails/restaurants/rest_wayfarer.jpg",
+      "rating": 4.3
+    },
+    "id03": {
+      "name": "Nhà hàng Datanla",
+      "lat": 11.9009491,
+      "longt": 108.4465586,
+      "thumbURL": "https://dl.dropboxusercontent.com/u/9116124/TourDemo/thumbnails/restaurants/datanla_rest.jpg",
+      "rating": 4.3
+    },
+    "id04": {
+      "name": "Nhà hàng thung lũng Trăm Năm",
+      "lat": 11.9441808,
+      "longt": 108.4641981,
+      "thumbURL": "https://dl.dropboxusercontent.com/u/9116124/TourDemo/thumbnails/restaurants/rest_thunglung_tram_nam.jpg",
+      "rating": 4.0
+    }
+  },
+  "Khách sạn": {
+    "id05": {
+      "name": "Villa Nice Dream",
+      "lat": 11.947417,
+      "longt": 108.458799,
+      "thumbURL": "https://dl.dropboxusercontent.com/u/9116124/TourDemo/thumbnails/hotels/villa_nice_dream.jpg",
+      "rating": 4.0
+    },
+    "id06": {
+      "name": "Nice Dream Hotel",
+      "lat": 11.943009,
+      "longt":  108.437677,
+      "thumbURL": "https://dl.dropboxusercontent.com/u/9116124/TourDemo/thumbnails/hotels/nice_dream_hotel.jpg",
+      "rating": 3.8
+    }
+  },
+  "Điểm tham quan": {
+    "id07": {
+      "name": "Thác Datanla",
+      "lat": 11.9009543,
+      "longt": 108.4465586,
+      "thumbURL": "https://dl.dropboxusercontent.com/u/9116124/TourDemo/thumbnails/diadiem/datanla.jpg",
+      "rating": 4.3
+    },
+    "id08": {
+      "name": "Đồi Robin",
+      "lat": 11.9251012,
+      "longt": 108.4402798,
+      "thumbURL": "https://dl.dropboxusercontent.com/u/9116124/TourDemo/thumbnails/diadiem/doi_robin.jpg",
+      "rating": 4.3
+    },
+    "id09": {
+      "name": "LangBiang",
+      "lat": 12.0480142,
+      "longt": 108.3705156,
+      "thumbURL": "https://dl.dropboxusercontent.com/u/9116124/TourDemo/thumbnails/diadiem/lang_biang.jpg",
+      "rating": 4.1
+    }
+
+  }
+}
+}

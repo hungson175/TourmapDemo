@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "206100938706",
+    "firebase_url": "https://tourmapdemo-ce69e.firebaseio.com",
+    "project_id": "tourmapdemo-ce69e",
+    "storage_bucket": "tourmapdemo-ce69e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:206100938706:android:8c517b4e5674482f",
+        "android_client_info": {
+          "package_name": "mobile.dtd.vn.tourmapdemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "206100938706-splr3e8o209sl5ot1b1jdfvonpeujqk6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "mobile.dtd.vn.tourmapdemo",
+            "certificate_hash": "C524365FBEA33FC5F13577594FB6282736517EC0"
+          }
+        },
+        {
+          "client_id": "206100938706-gbnda3n46bbiftbah2re1pmenlb1gqga.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_1YCXJP5o5rgAklGOq97Fsa5dFEgooJQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "206100938706-gbnda3n46bbiftbah2re1pmenlb1gqga.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

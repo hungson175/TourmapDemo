@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">TourmapDemo</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="sign_in">Sign in</string>
+    <string name="tourmap_demo">Tourmap Demo</string>
+</resources>

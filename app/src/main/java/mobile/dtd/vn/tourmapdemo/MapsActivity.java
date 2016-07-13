@@ -2,6 +2,7 @@ package mobile.dtd.vn.tourmapdemo;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
@@ -12,6 +13,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -19,6 +23,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -29,7 +34,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,6 +54,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private DatabaseReference firebaseDbRef;
     private List<PlaceItem> places;
     private HashMap<String,PlaceItem> mapMarkerId2Place = new HashMap<>();
+    private Marker markerShowingInfoWindow = null;
+    private HashMap<Marker, Bitmap> filledImage = new HashMap<>();
+    private HashMap<String, PlaceItem> mapId2Place = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,8 +125,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 listPlaces = new ArrayList<>();
                 for(DataSnapshot cateS : dataSnapshot.getChildren()) {
                     for(DataSnapshot ps : cateS.getChildren()) {
-                        PlaceItem p = ps.getValue(PlaceItem.class);
-                        listPlaces.add(p);
+                        try {
+                            String dbId = ps.getKey();
+                            PlaceItem p = ps.getValue(PlaceItem.class);
+                            p.setDbId(dbId);
+                            listPlaces.add(p);
+                        } catch (Exception e) {
+                            //nothing, skip
+                        }
                     }
                 }
                 setMapMarkers(listPlaces);
@@ -138,13 +151,41 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
 
             @Override
-            public View getInfoContents(Marker marker) {
+            public View getInfoContents(final Marker marker) {
+                Log.i(TAG,"Show info window for marker: " + marker.getTitle());
+                markerShowingInfoWindow = marker;
                 View v = Helpers.inflate(getApplicationContext(),R.layout.info_window);
                 PlaceItem place = mapMarkerId2Place.get(marker.getId());
                 String imgURL = place.getThumbURL();
-                ImageView ivThumb = (ImageView) v.findViewById(R.id.ivThumb);
-                Picasso.with(getApplicationContext()).load(imgURL).placeholder(R.drawable.flat_camera_icon).into(ivThumb);
+                final ImageView ivThumb = (ImageView) v.findViewById(R.id.ivThumb);
+                if ( filledImage.get(marker) == null) {
+                    ImageRequest imgRequest = new ImageRequest(imgURL,
+                            new Response.Listener<Bitmap>() {
+
+                                @Override
+                                public void onResponse(Bitmap bitmap) {
+                                    ivThumb.setImageBitmap(bitmap);
+                                    filledImage.put(marker,bitmap);
+                                    if (markerShowingInfoWindow != null && markerShowingInfoWindow.isInfoWindowShown()) {
+                                        markerShowingInfoWindow.hideInfoWindow();
+                                        markerShowingInfoWindow.showInfoWindow();
+                                    }
+                                }
+                            }, 0, 0, null,
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.i(TAG, "Error while loading image for marker: " + marker.getTitle() + " | Error: " + error.getMessage());
+
+                                }
+                            }
+                    );
+//                Picasso.with(getApplicationContext()).load(imgURL).placeholder(R.drawable.flat_camera_icon).into(ivThumb);
 //                ivThumb.setImageUrl(imgURL,VolleySingleton.getInstance(getApplicationContext()).getImageLoader());
+                    MySingleton.getInstance(getApplicationContext()).addToRequestQueue(imgRequest);
+                } else {
+                    ivThumb.setImageBitmap(filledImage.get(marker));
+                }
                 TextView tvTitle = (TextView) v.findViewById(R.id.tvTitle);
                 tvTitle.setText(place.getName());
                 RatingBar ratingBar = (RatingBar) v.findViewById(R.id.ratingBar);
@@ -155,6 +196,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void setMapMarkers(List<PlaceItem> places) {
+        Log.i(TAG, "Set map markers");
         googleMap.clear();
         mapMarkerId2Place.clear();
         for (PlaceItem place : places) {
@@ -165,6 +207,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Marker marker = this.googleMap.addMarker(options);
             mapMarkerId2Place.put(marker.getId(),place);
         }
-        this.googleMap.moveCamera(CameraUpdateFactory.newLatLng(CENTER));
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(CENTER)      // Sets the center of the map to Mountain View
+                .zoom(12)                   // Sets the zoom
+                .build();                   // Creates a CameraPosition from the builder
+        this.googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        this.googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                PlaceItem place = mapMarkerId2Place.get(marker.getId());
+                String dbId = place.getDbId();
+                Intent intent = new Intent(MapsActivity.this, PlaceDetailsActivity.class);
+                intent.putExtra(PlaceDetailsActivity.PARAM_PLACE_ID,dbId);
+                startActivity(intent);
+            }
+        });
     }
 }

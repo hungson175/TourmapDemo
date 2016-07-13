@@ -9,7 +9,6 @@
         android:layout_width="72dp"
         android:layout_height="@dimen/std_ic"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/flat_camera_icon"
         android:scaleType="fitCenter"
         />
     <LinearLayout

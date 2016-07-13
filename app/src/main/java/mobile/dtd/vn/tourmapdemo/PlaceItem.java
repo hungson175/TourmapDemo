@@ -9,6 +9,7 @@ public class PlaceItem {
     private String name;
     private double rating;
     private String thumbURL;
+    private String dbId;
 
     public PlaceItem(double longt, double lat, String name, double rating, String thumbURL) {
         this.longt = longt;
@@ -40,5 +41,13 @@ public class PlaceItem {
 
     public double getRating() {
         return rating;
+    }
+
+    public void setDbId(String dbId) {
+        this.dbId = dbId;
+    }
+
+    public String getDbId() {
+        return dbId;
     }
 }
